@@ -1,0 +1,502 @@
+/* =========================================================
+   MockMate Auth — shares tokens with MockMateLanding.css
+   If both are mounted on the same page, the duplicated
+   :root-level tokens below are harmless (same values).
+   ========================================================= */
+
+.mma {
+  --ink: #0b0e14;
+  --ink-soft: #11151f;
+  --card: #161b27;
+  --card-border: #232a3a;
+  --line: #232a3a;
+  --text: #edeff3;
+  --text-dim: #9aa3b5;
+  --text-faint: #6a7388;
+  --mint: #5ee6c4;
+  --mint-dim: #3aa68d;
+  --amber: #f2a65a;
+  --rose: #e8718a;
+  --error: #f17585;
+
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", serif;
+  --font-body: "Space Grotesk", "Inter", -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.mma * {
+  box-sizing: border-box;
+}
+
+.mma a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.mma button {
+  font-family: var(--font-body);
+}
+
+.mma input {
+  font-family: var(--font-body);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mma *,
+  .mma *::before,
+  .mma *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* =========================================================
+   Layout grid
+   ========================================================= */
+
+.mma__grid {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(360px, 0.85fr) 1.15fr;
+}
+
+/* =========================================================
+   Left panel
+   ========================================================= */
+
+.mma__panel {
+  background: var(--ink-soft);
+  border-right: 1px solid var(--line);
+  padding: 2.4rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.mma__panel::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(94, 230, 196, 0.16), transparent 70%);
+  pointer-events: none;
+}
+
+.mma__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  z-index: 1;
+}
+
+.mma__brand-mark {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 0 4px rgba(94, 230, 196, 0.16);
+  flex-shrink: 0;
+}
+
+.mma__panel-body {
+  z-index: 1;
+  margin-top: 3rem;
+}
+
+.mma__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mint);
+  margin: 0 0 0.9rem;
+}
+
+.mma__panel-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 2.6rem;
+}
+
+.mma__panel-accent {
+  color: var(--mint);
+  font-style: italic;
+}
+
+.mma__panel-foot {
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--text-faint);
+  letter-spacing: 0.02em;
+}
+
+/* Listen card (signature element) */
+
+.listen-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.5rem 1.7rem;
+  max-width: 360px;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+}
+
+.listen-card__top {
+  margin-bottom: 1.1rem;
+}
+
+.listen-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--mint);
+  letter-spacing: 0.04em;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--mint);
+  animation: pulse 1.8s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(94, 230, 196, 0.55); }
+  70% { box-shadow: 0 0 0 8px rgba(94, 230, 196, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(94, 230, 196, 0); }
+}
+
+.listen-card__caption {
+  margin: 1rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.waveform {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 44px;
+}
+
+.waveform__bar {
+  flex: 1;
+  height: var(--h, 30%);
+  min-height: 4px;
+  background: linear-gradient(180deg, var(--mint), var(--mint-dim));
+  border-radius: 3px;
+  opacity: 0.85;
+  animation: bar-pulse 1.1s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.waveform.is-active .waveform__bar {
+  animation-play-state: running;
+}
+
+@keyframes bar-pulse {
+  0%, 100% { transform: scaleY(0.45); }
+  50% { transform: scaleY(1); }
+}
+
+/* =========================================================
+   Right side: form
+   ========================================================= */
+
+.mma__form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.4rem;
+}
+
+.mma__form-wrap {
+  width: 100%;
+  max-width: 420px;
+}
+
+.mma__tabs {
+  display: inline-flex;
+  background: var(--ink-soft);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 2.2rem;
+}
+
+.mma__tab {
+  background: none;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.mma__tab.is-active {
+  background: var(--mint);
+  color: #06231c;
+}
+
+.mma__tab:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+
+.mma__form-title {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5rem;
+}
+
+.mma__form-sub {
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin: 0 0 1.8rem;
+}
+
+.mma__alert {
+  background: rgba(241, 117, 133, 0.1);
+  border: 1px solid rgba(241, 117, 133, 0.35);
+  color: var(--error);
+  font-size: 0.86rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.3rem;
+  line-height: 1.45;
+}
+
+.mma__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.field__label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.field__label {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.field__hint-link {
+  font-size: 0.78rem;
+  color: var(--mint);
+  font-weight: 600;
+}
+
+.field__hint-link:hover {
+  color: #79efd2;
+}
+
+.field__input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field__input {
+  width: 100%;
+  background: var(--ink-soft);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.95rem;
+  font-size: 0.94rem;
+  color: var(--text);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.field__input-group .field__input {
+  padding-right: 3.6rem;
+}
+
+.field__input::placeholder {
+  color: var(--text-faint);
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--mint-dim);
+  box-shadow: 0 0 0 3px rgba(94, 230, 196, 0.14);
+}
+
+.field__input.has-error {
+  border-color: var(--error);
+}
+
+.field__input.has-error:focus {
+  box-shadow: 0 0 0 3px rgba(241, 117, 133, 0.14);
+}
+
+.field__toggle {
+  position: absolute;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.3rem 0.4rem;
+}
+
+.field__toggle:hover {
+  color: var(--mint);
+}
+
+.field__error {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--error);
+}
+
+.mma__submit {
+  margin-top: 0.4rem;
+  background: var(--mint);
+  color: #06231c;
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.mma__submit:hover:not(:disabled) {
+  background: #79efd2;
+  transform: translateY(-1px);
+}
+
+.mma__submit:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 3px;
+}
+
+.mma__submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.mma__submit-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(6, 35, 28, 0.3);
+  border-top-color: #06231c;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.mma__switch {
+  margin: 1.6rem 0 0;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+}
+
+.mma__switch-link {
+  background: none;
+  border: none;
+  color: var(--mint);
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mma__switch-link:hover {
+  color: #79efd2;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 920px) {
+  .mma__grid {
+    grid-template-columns: 1fr;
+  }
+  .mma__panel {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    padding: 2rem 1.6rem;
+  }
+  .mma__panel-body {
+    margin-top: 2rem;
+  }
+  .mma__panel-title {
+    margin-bottom: 1.8rem;
+  }
+  .listen-card {
+    max-width: none;
+  }
+  .mma__form-side {
+    padding: 2.4rem 1.6rem 3.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mma__panel {
+    padding: 1.6rem 1.2rem;
+  }
+  .mma__form-wrap {
+    max-width: none;
+  }
+}

@@ -161,7 +161,7 @@ function Section({ id, eyebrow, title, sub, children, className = "" }) {
   );
 }
 
-export default function Landing() {
+export default function Landing({ onAuthClick }) {
   const [navOpen, setNavOpen] = useState(false);
 
   return (
@@ -181,8 +181,8 @@ export default function Landing() {
           </nav>
 
           <div className="nav__actions">
-            <button type="button" className="btn btn--ghost">Log in</button>
-            <button type="button" className="btn btn--primary">Sign up free</button>
+            <button type="button" onClick={() => onAuthClick('login')} className="btn btn--ghost">Log in</button>
+            <button type="button" onClick={() => onAuthClick('signup')} className="btn btn--primary">Sign up free</button>
           </div>
 
           <button
