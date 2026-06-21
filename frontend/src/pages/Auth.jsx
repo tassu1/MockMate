@@ -25,13 +25,14 @@ function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-export default function Auth({ onAuthSuccess }) {
-  const [mode, setMode] = useState("login"); // "login" | "signup"
+export default function Auth({ passmode }) {
+  const [mode, setMode] = useState(passmode); // "login" | "signup"
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
+  {console.log(mode)}
 
   const isSignup = mode === "signup";
 

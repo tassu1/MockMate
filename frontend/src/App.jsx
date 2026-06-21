@@ -1,30 +1,17 @@
-import { useState } from 'react';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing';
 import Auth from './pages/Auth';
 
 function App() {
-  // Track if auth modal is open
-  const [isAuthOpen, setIsAuthOpen] = useState(false); 
-  // Track if user clicked 'login' or 'signup'
-  const [authMode, setAuthMode] = useState('login'); 
-
-  const openAuth = (mode) => {
-    setAuthMode(mode);
-    setIsAuthOpen(true);
-  };
-
   return (
-    <>
-      <Landing onAuthClick={openAuth} />
-      
-      {isAuthOpen && (
-        <Auth 
-          mode={authMode} 
-          onClose={() => setIsAuthOpen(false)} 
-        />
-      )}
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        {/* Pass the mode directly via route definition */}
+        <Route path="/login" element={<Auth passmode="login" />} />
+        <Route path="/signup" element={<Auth passmode="signup" />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
