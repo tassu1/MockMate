@@ -112,7 +112,7 @@ export default function Auth({ passmode }) {
       <div className="mma__grid">
         {/* Panel: brand + live waveform */}
         <aside className="mma__panel">
-          <a className="mma__brand" href="#top">
+          <a className="mma__brand" href="/">
             <span className="mma__brand-mark" aria-hidden="true" />
             MockMate
           </a>
