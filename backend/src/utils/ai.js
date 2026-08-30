@@ -2,8 +2,6 @@ import OpenAI from "openai";
 
 let client;
 
-// Lazily instantiate so a missing OPENAI_API_KEY only fails when an
-// interview/report call actually happens, not at server boot.
 const getClient = () => {
   if (!client) {
     if (!process.env.OPENAI_API_KEY) {
