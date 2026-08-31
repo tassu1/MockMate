@@ -1,0 +1,186 @@
+.mmd {
+  --ink: #0b0e14;
+  --card: #161b27;
+  --card-border: #232a3a;
+  --text: #edeff3;
+  --text-dim: #9aa3b5;
+  --mint: #5ee6c4;
+  --error: #f17585;
+
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", serif;
+  --font-body: "Space Grotesk", "Inter", -apple-system, sans-serif;
+
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-body);
+}
+
+.mmd * {
+  box-sizing: border-box;
+}
+
+.mmd__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.mmd__brand {
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
+.mmd__logout {
+  background: none;
+  border: 1px solid var(--card-border);
+  color: var(--text-dim);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.mmd__logout:hover {
+  color: var(--text);
+  border-color: var(--text-dim);
+}
+
+.mmd__main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.mmd__intro h1 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  margin: 0 0 8px;
+}
+
+.mmd__intro p {
+  color: var(--text-dim);
+  margin: 0 0 32px;
+  line-height: 1.5;
+}
+
+.mmd__alert {
+  background: rgba(241, 117, 133, 0.12);
+  border: 1px solid var(--error);
+  color: var(--error);
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.mmd__panel {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.mmd__panel-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  margin: 0 0 16px;
+}
+
+.mmd__muted {
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+.mmd__resume-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mmd__resume-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.mmd__resume-item:has(input:checked) {
+  border-color: var(--mint);
+}
+
+.mmd__upload-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px dashed var(--card-border);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.mmd__upload-btn:hover {
+  border-color: var(--mint);
+  color: var(--text);
+}
+
+.mmd__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mmd__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mmd__field label {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.mmd__field input,
+.mmd__field select {
+  background: var(--ink);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.mmd__field input:focus,
+.mmd__field select:focus {
+  outline: none;
+  border-color: var(--mint);
+}
+
+.mmd__start-btn {
+  background: var(--mint);
+  color: #0b0e14;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.mmd__start-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
