@@ -1,6 +1,6 @@
 import Interview from "../models/interview.js";
 import Resume from "../models/resume.js";
-import { chatComplete } from "../utils/openai.js";
+import { chatComplete } from "../utils/ai.js";
 import { buildInterviewerSystemPrompt } from "../utils/prompts.js";
 import { enqueueReportJob } from "../queue/reportQueue.js";
 

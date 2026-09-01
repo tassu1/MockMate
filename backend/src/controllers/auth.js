@@ -33,7 +33,6 @@ console.log("idhr bhi aagya")
     res.status(201).json({
       success: true,
       token,
-      user,
     });
   } catch (error) {
     res.status(500).json({
@@ -55,11 +54,15 @@ export const login = async (req, res) => {
         message: "Invalid credentials",
       });
     }
-
+console.log("idhr login me aafgye h")
     const match = await bcrypt.compare(
       password,
       user.password
     );
+
+    if(match){
+      console.log("match ho gyaaa")
+    }
 
     if (!match) {
       return res.status(400).json({
@@ -73,7 +76,6 @@ export const login = async (req, res) => {
     res.json({
       success: true,
       token,
-      user,
     });
   } catch (error) {
     res.status(500).json({
