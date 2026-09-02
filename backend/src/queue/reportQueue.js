@@ -11,6 +11,7 @@ export const reportQueue = new Queue(REPORT_QUEUE_NAME, { connection });
  * or JSON parsing fails.
  */
 export const enqueueReportJob = async (interviewId) => {
+  console.log("report ho rha h")
   await reportQueue.add(
     "generate-report",
     { interviewId: interviewId.toString() },
@@ -21,4 +22,5 @@ export const enqueueReportJob = async (interviewId) => {
       removeOnFail: 100, // keep failures around for debugging
     }
   );
+  console.log("report ho gya")
 };
