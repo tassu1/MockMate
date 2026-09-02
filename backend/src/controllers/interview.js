@@ -139,8 +139,7 @@ console.log(interview.questionLimit)
       interviewEnded: shouldEnd,
     });
 
-    // Report generation is handed off to the queue — a worker process
-    // picks it up, so this request doesn't wait on the LLM call at all.
+    
     if (shouldEnd) {
       await enqueueReportJob(interview._id);
     }

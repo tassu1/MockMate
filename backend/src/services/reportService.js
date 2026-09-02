@@ -1,5 +1,5 @@
 import Interview from "../models/interview.js";
-import { chatComplete } from "../utils/openai.js";
+import { chatComplete } from "../utils/ai.js";
 import { buildReportPrompt } from "../utils/prompts.js";
 
 // Generates and saves the report for a given interview.
