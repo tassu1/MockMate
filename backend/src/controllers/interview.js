@@ -97,7 +97,7 @@ export const answerInterview = async (req, res) => {
     const questionsAskedSoFar = interview.messages.filter(
       (m) => m.sender === "ai"
     ).length;
-
+console.log(interview.questionLimit)
     const reachedLimit = questionsAskedSoFar >= interview.questionLimit;
 
     const systemPrompt = buildInterviewerSystemPrompt({
@@ -198,7 +198,6 @@ export const getReport = async (req, res) => {
         message: "Interview not found",
       });
     }
-console.log(interview)
     if (!interview.report) {
       return res.status(202).json({
         success: false,
