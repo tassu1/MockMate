@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Auth.css";
 
 const API_BASE = "http://localhost:5000/api/auth";
-
 function WaveformBars({ active = true }) {
   const bars = new Array(20).fill(0);
   return (
@@ -32,7 +32,8 @@ export default function Auth({ passmode }) {
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
-  {console.log(mode)}
+  const navigate = useNavigate();
+
 
   const isSignup = mode === "signup";
 
@@ -79,6 +80,7 @@ export default function Auth({ passmode }) {
       });
 
       const data = await res.json().catch(() => null);
+   
 
       if (!res.ok || !data || data.success === false) {
         setServerError(
@@ -90,15 +92,18 @@ export default function Auth({ passmode }) {
       }
 
       if (data.token) {
+     
         localStorage.setItem("mockmate_token", data.token);
       }
 
       setLoading(false);
-      if (onAuthSuccess) onAuthSuccess(data);
-    } catch (err) {
-      setServerError("Can't reach the server. Check your connection and try again.");
-      setLoading(false);
-    }
+      // if (onAuthSuccess) onAuthSuccess(data);
+      navigate("/dashboard")
+   } catch (err) {
+  console.error("LOGIN ERROR:", err);
+  setServerError(err.message || "Something went wrong.");
+  setLoading(false);
+}
   }
 
   function switchMode(next) {

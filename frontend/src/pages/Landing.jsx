@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "../styles/Landing.css";
 
 const ROLES = [
@@ -161,8 +162,9 @@ function Section({ id, eyebrow, title, sub, children, className = "" }) {
   );
 }
 
-export default function Landing({ onAuthClick }) {
+export default function Landing() {
   const [navOpen, setNavOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="mm">
@@ -181,8 +183,8 @@ export default function Landing({ onAuthClick }) {
           </nav>
 
           <div className="nav__actions">
-            <button type="button" onClick={() => onAuthClick('login')} className="btn btn--ghost">Log in</button>
-            <button type="button" onClick={() => onAuthClick('signup')} className="btn btn--primary">Sign up free</button>
+            <button type="button" onClick={() => navigate('/login')} className="btn btn--ghost">Log in</button>
+            <button type="button" onClick={() => navigate('/signup')} className="btn btn--primary">Sign up free</button>
           </div>
 
           <button
