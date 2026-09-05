@@ -11,6 +11,25 @@ const LEVELS = [
   { value: "lead", label: "Lead" },
 ];
 
+function IconUpload() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 16V4" />
+      <path d="M7 9l5-5 5 5" />
+      <path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" />
+    </svg>
+  );
+}
+
+function IconDoc() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <path d="M14 2v6h6" />
+    </svg>
+  );
+}
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -98,10 +117,15 @@ export default function Dashboard() {
   return (
     <div className="mmd">
       <header className="mmd__header">
-        <span className="mmd__brand">MockMate</span>
-        <button className="mmd__logout" onClick={handleLogout} type="button">
-          Log out
-        </button>
+        <div className="mmd__header-inner">
+          <span className="mmd__brand">
+            <span className="mmd__brand-mark" aria-hidden="true" />
+            MockMate
+          </span>
+          <button className="mmd__logout" onClick={handleLogout} type="button">
+            Log out
+          </button>
+        </div>
       </header>
 
       <main className="mmd__main">
@@ -119,86 +143,99 @@ export default function Dashboard() {
           </div>
         )}
 
-        <section className="mmd__panel">
-          <h2 className="mmd__panel-title">Your resumes</h2>
+        <div className="mmd__grid">
+          <section className="mmd__panel">
+            <h2 className="mmd__panel-title">Your resumes</h2>
 
-          {loadingResumes ? (
-            <p className="mmd__muted">Loading...</p>
-          ) : resumes.length === 0 ? (
-            <p className="mmd__muted">No resumes uploaded yet.</p>
-          ) : (
-            <ul className="mmd__resume-list">
-              {resumes.map((r) => {
-                const id = r.id || r._id;
-                return (
-                  <li key={id}>
-                    <label className="mmd__resume-item">
-                      <input
-                        type="radio"
-                        name="resume"
-                        checked={selectedResumeId === id}
-                        onChange={() => setSelectedResumeId(id)}
-                      />
-                      <span>{r.filename}</span>
-                    </label>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+            {loadingResumes ? (
+              <p className="mmd__muted">Loading...</p>
+            ) : resumes.length === 0 ? (
+              <p className="mmd__muted">No resumes uploaded yet.</p>
+            ) : (
+              <ul className="mmd__resume-list">
+                {resumes.map((r) => {
+                  const id = r.id || r._id;
+                  const active = selectedResumeId === id;
+                  return (
+                    <li key={id}>
+                      <label className={`mmd__resume-item ${active ? "is-active" : ""}`}>
+                        <input
+                          type="radio"
+                          name="resume"
+                          checked={active}
+                          onChange={() => setSelectedResumeId(id)}
+                        />
+                        <span className="mmd__resume-icon">
+                          <IconDoc />
+                        </span>
+                        <span className="mmd__resume-name">{r.filename}</span>
+                        <span className="mmd__resume-dot" aria-hidden="true" />
+                      </label>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
 
-          <button
-            type="button"
-            className="mmd__upload-btn"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
-          >
-            {uploading ? "Uploading..." : "Upload a resume (PDF)"}
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            hidden
-          />
-        </section>
-
-        <section className="mmd__panel">
-          <h2 className="mmd__panel-title">Start an interview</h2>
-
-          <form className="mmd__form" onSubmit={handleStartInterview}>
-            <div className="mmd__field">
-              <label htmlFor="role">Role</label>
-              <input
-                id="role"
-                type="text"
-                placeholder="e.g. Frontend Engineer"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              />
-            </div>
-
-            <div className="mmd__field">
-              <label htmlFor="level">Experience level</label>
-              <select
-                id="level"
-                value={level}
-                onChange={(e) => setLevel(e.target.value)}
-              >
-                {LEVELS.map((l) => (
-                  <option key={l.value} value={l.value}>
-                    {l.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <button type="submit" className="mmd__start-btn" disabled={starting}>
-              {starting ? "Starting..." : "Start interview"}
+            <button
+              type="button"
+              className="mmd__upload-btn"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+            >
+              <span className="mmd__upload-icon">
+                <IconUpload />
+              </span>
+              {uploading ? "Uploading..." : "Upload a resume (PDF)"}
             </button>
-          </form>
-        </section>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileChange}
+              hidden
+            />
+          </section>
+
+          <section className="mmd__panel">
+            <h2 className="mmd__panel-title">Start an interview</h2>
+
+            <form className="mmd__form" onSubmit={handleStartInterview}>
+              <div className="mmd__field">
+                <label htmlFor="role">Role</label>
+                <input
+                  id="role"
+                  type="text"
+                  placeholder="e.g. Frontend Engineer"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                />
+              </div>
+
+              <div className="mmd__field">
+                <label>Experience level</label>
+                <div className="mmd__level-picker" role="radiogroup" aria-label="Experience level">
+                  {LEVELS.map((l) => (
+                    <button
+                      key={l.value}
+                      type="button"
+                      role="radio"
+                      aria-checked={level === l.value}
+                      className={`mmd__level-pill ${level === l.value ? "is-active" : ""}`}
+                      onClick={() => setLevel(l.value)}
+                    >
+                      {l.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <button type="submit" className="mmd__start-btn" disabled={starting}>
+                {starting ? "Starting..." : "Start interview"}
+              </button>
+            </form>
+          </section>
+        </div>
       </main>
     </div>
   );
