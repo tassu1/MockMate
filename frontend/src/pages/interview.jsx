@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "../styles/Interview.css";
-import { api } from "../lib/api";
-import { API_URL } from "../lib/api";
+import { api,API_URL } from "../lib/api";
+
 
 const API_BASE = `${API_URL}/interview`;
 

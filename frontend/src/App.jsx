@@ -1,17 +1,17 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Landing from './pages/Landing.jsx';
-import Auth from './pages/Auth.jsx';
-import Dashboard from './pages/Dashboard.jsx';
-// import Interview from './pages/Interview.jsx';
-import Report from './pages/Report.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Landing from "./pages/Landing.jsx";
+import Auth from "./pages/Auth.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import Interview from "./pages/Interview.jsx";
+import Report from "./pages/Report.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
-        {/* Pass the mode directly via route definition */}
+
         <Route path="/login" element={<Auth passmode="login" />} />
         <Route path="/signup" element={<Auth passmode="signup" />} />
 
@@ -23,14 +23,16 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* <Route
+
+        <Route
           path="/interview/:id"
           element={
             <ProtectedRoute>
               <Interview />
             </ProtectedRoute>
           }
-        /> */}
+        />
+
         <Route
           path="/interview/:id/report"
           element={
