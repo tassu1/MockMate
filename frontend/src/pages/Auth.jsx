@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Auth.css";
+import { API_URL } from "../lib/api";
 
-const API_BASE = "http://localhost:5000/api/auth";
+const API_BASE = `${API_URL}/auth`;
 
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);

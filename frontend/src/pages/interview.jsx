@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "../styles/Interview.css";
 import { api } from "../lib/api";
+import { API_URL } from "../lib/api";
 
-// Adjust to match your actual backend base — inferred from Auth.jsx.
-const API_BASE = "http://localhost:5000/api/interview";
+const API_BASE = `${API_URL}/interview`;
+
 
 export default function Interview() {
   const { id } = useParams();
