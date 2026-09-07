@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Landing from './pages/Landing';
-import Auth from './pages/Auth';
-import Dashboard from './pages/Dashboard';
-import Interview from './pages/Interview';
-import Report from './pages/Report';
-import ProtectedRoute from './components/ProtectedRoute';
+import Landing from './pages/Landing.jsx';
+import Auth from './pages/Auth.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import Interview from './pages/Interview.jsx';
+import Report from './pages/Report.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 function App() {
   return (
