@@ -1,5 +1,5 @@
 
-export const API_ROOT = import.meta.env.VITE_API_URL;
+export const API_URL = import.meta.env.VITE_API_URL;
 function getToken() {
   return localStorage.getItem("mockmate_token");
 }
@@ -23,7 +23,7 @@ async function request(path, { method = "GET", body, isForm = false } = {}) {
   if (token) headers.Authorization = `Bearer ${token}`;
   if (!isForm && body) headers["Content-Type"] = "application/json";
 
-  const res = await fetch(`${API_ROOT}${path}`, {
+  const res = await fetch(`${API_URL}${path}`, {
     method,
     headers,
     body: isForm ? body : body ? JSON.stringify(body) : undefined,
