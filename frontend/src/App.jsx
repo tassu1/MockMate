@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing.jsx";
 import Auth from "./pages/Auth.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import Interview from "./pages/Interview.jsx";
+import Interview from "./pages/interview.jsx";
 import Report from "./pages/Report.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
