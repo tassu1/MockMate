@@ -4,7 +4,7 @@
 
 **Practice interviews with an AI that actually read your resume.**
 
-Upload your resume, pick a role and experience level, and go through a live, conversational mock interview with an AI interviewer — then get a detailed, data-driven performance report at the end.
+Upload your resume, pick a role and experience level, and go through a live, conversational mock interview with an AI interviewer — then get a detailed interview performance report at the end.
 
 [![Live App](https://img.shields.io/badge/demo-getmockmate.vercel.app-4c1?style=for-the-badge)](https://getmockmate.vercel.app/)
 ![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
@@ -17,24 +17,6 @@ Upload your resume, pick a role and experience level, and go through a live, con
 **[🌐 Live Demo](https://getmockmate.vercel.app/)** · **[🐛 Report Bug](https://github.com/tassu1/MockMate/issues)** · **[✨ Request Feature](https://github.com/tassu1/MockMate/issues)**
 
 </div>
-
----
-
-## 📚 Table of Contents
-
-- [Screenshots](#-screenshots)
-- [Features](#-features)
-- [Tech Stack](#️-tech-stack)
-- [Architecture](#️-architecture)
-- [Project Structure](#-project-structure)
-- [API Overview](#-api-overview)
-- [How It Works](#-how-it-works)
-- [Deployment](#️-deployment)
-- [Getting Started](#-getting-started)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Author](#-author)
 
 ---
 
@@ -102,22 +84,17 @@ Upload your resume, pick a role and experience level, and go through a live, con
 **Strengths, weaknesses & suggestions**
 <img src="screenshots/12-report-breakdown.png" alt="Interview report showing strengths, weaknesses, and suggestions" width="100%">
 
-> 🗂️ Screenshots live in [`/screenshots`](screenshots) — drop this folder in your repo root (or adjust the paths above) for the images to render on GitHub.
-
 ---
 
 ## ✨ Features
 
-| | |
-|---|---|
-| 🔐 **Authentication** | JWT-based signup/login with bcrypt-hashed passwords. |
-| 📄 **Resume Upload & Parsing** | Upload a PDF resume; text is extracted server-side and stored to ground the interview in your real experience. |
-| 🤖 **AI-Driven Mock Interviews** | An LLM interviewer (via OpenRouter) asks one question at a time, mixing technical and behavioral questions based on your resume, target role, and experience level. |
-| ⚡ **Real-Time Streaming** | Interviewer replies stream back to the client over Server-Sent Events (SSE) for a natural, typing-as-you-go feel. |
-| 🧠 **Automatic Wrap-Up** | The interview ends automatically after a configurable number of questions (default: 8). |
-| 📊 **AI-Generated Reports** | A structured report with overall score, category breakdown (technical knowledge, communication, problem solving, resume alignment), strengths, weaknesses, and actionable suggestions. |
-| 🧵 **Queue-Based Report Generation** | Report generation runs on a BullMQ + Redis queue with retries and exponential backoff, so the API stays fast and resilient even if the LLM call fails. |
-| 🗂️ **Interview History** | Resumes and past interviews are tied to your account and listed on your dashboard. |
+- Resume-based AI interviews — questions are grounded in your actual resume, role, and experience level
+- Real-time question streaming over SSE (no waiting for a full response to render)
+- Automatic interview wrap-up after 8 questions
+- Background report generation with BullMQ + Redis (3 retry attempts, exponential backoff)
+- JWT authentication with bcrypt-hashed passwords
+- Interview history tied to your account
+- Performance report: overall score, category breakdown, strengths, weaknesses, suggestions
 
 ---
 
@@ -128,29 +105,27 @@ Upload your resume, pick a role and experience level, and go through a live, con
 <td valign="top">
 
 **Frontend**
-- [React 19](https://react.dev/)
-- [Vite](https://vitejs.dev/)
-- [React Router](https://reactrouter.com/)
-- [Axios](https://axios-http.com/)
-- CSS Modules / plain CSS
+- React 19 + Vite
+- React Router
+- Axios
 
 </td>
 <td valign="top">
 
 **Backend**
-- [Node.js](https://nodejs.org/) + [Express 5](https://expressjs.com/)
-- [MongoDB](https://www.mongodb.com/) + [Mongoose](https://mongoosejs.com/)
-- [JWT](https://jwt.io/) + [bcryptjs](https://www.npmjs.com/package/bcryptjs)
-- [Multer](https://www.npmjs.com/package/multer) + [pdf-parse](https://www.npmjs.com/package/pdf-parse)
+- Node.js + Express 5
+- MongoDB + Mongoose
+- JWT + bcryptjs
+- Multer + pdf-parse
 
 </td>
 <td valign="top">
 
 **Infra & AI**
-- [BullMQ](https://docs.bullmq.io/) + [ioredis](https://github.com/redis/ioredis)
-- [OpenRouter](https://openrouter.ai/) (LLM API, streaming)
-- **Vercel** (frontend hosting)
-- **Render** (backend + worker hosting)
+- BullMQ + ioredis
+- OpenRouter (LLM API, streaming)
+- Vercel (frontend)
+- Render (API + worker)
 
 </td>
 </tr>
@@ -160,16 +135,15 @@ Upload your resume, pick a role and experience level, and go through a live, con
 
 ## 🏛️ Architecture
 
-MockMate is split into three independently deployable pieces that share the same MongoDB and Redis instances:
+MockMate runs as three separate pieces sharing the same MongoDB and Redis:
 
-- **Frontend (React + Vite)** — a static SPA that talks to the backend purely over HTTPS (REST + SSE).
-- **API server (`server.js`)** — handles auth, resume upload/parsing, and interview endpoints. It **enqueues** report jobs but never generates reports itself, so it stays fast and never blocks on LLM calls.
-- **Report worker (`worker.js`)** — a separate Node process that only pulls jobs off the BullMQ queue and calls the LLM to generate reports. Fully decoupled from the request/response cycle, so a slow or retried LLM call can never affect interview responsiveness.
+- **API server (`server.js`)** — auth, resume upload/parsing, interview endpoints. Enqueues report jobs but never generates them itself.
+- **Report worker (`worker.js`)** — pulls jobs off the BullMQ queue and calls the LLM to generate reports. The worker runs independently from the API, so report generation doesn't block interview requests.
 
 ```mermaid
 flowchart LR
     subgraph Client
-        FE["Frontend – React + Vite\n(hosted on Vercel)"]
+        FE["Frontend – React + Vite\n(Vercel)"]
     end
 
     subgraph Render["Render — Backend (2 services, 1 codebase)"]
@@ -177,11 +151,11 @@ flowchart LR
         WRK["Worker Service\nworker.js"]
     end
 
-    DB[("MongoDB\nUsers · Resumes · Interviews")]
+    DB[("MongoDB")]
     RD[("Redis\nBullMQ queue")]
-    LLM["OpenRouter\n(LLM API)"]
+    LLM["OpenRouter"]
 
-    FE -- "REST + SSE (HTTPS)" --> API
+    FE -- "REST + SSE" --> API
     API -- "reads / writes" --> DB
     API -- "enqueue report job" --> RD
     API -- "stream interview Q&A" --> LLM
@@ -189,14 +163,6 @@ flowchart LR
     WRK -- "generate report" --> LLM
     WRK -- "save report" --> DB
 ```
-
-**Why split the API and the worker?**
-
-The API needs to respond quickly to interview turns (streamed over SSE), while report generation is a slower, retryable, best-effort background task (up to 3 attempts with exponential backoff). Running them as **separate deployments** means:
-
-- The worker can be scaled, restarted, or redeployed independently of the live API.
-- A burst of report jobs — or a flaky LLM call — never adds latency to an active interview.
-- Each service gets its own resource limits/concurrency (e.g. `REPORT_WORKER_CONCURRENCY`), tuned separately from the API.
 
 ---
 
@@ -220,8 +186,8 @@ MockMate/
     └── src/
         ├── pages/                 # Landing, Auth, Dashboard, Interview, Report
         ├── components/            # ProtectedRoute, etc.
-        ├── lib/api.jsx            # API client (fetch wrapper + auth token)
-        └── styles/                # per-page CSS
+        ├── lib/api.jsx             # API client (fetch wrapper + auth token)
+        └── styles/                 # per-page CSS
 ```
 
 ---
@@ -243,55 +209,25 @@ MockMate/
 
 ## 🧭 How It Works
 
-1. **Sign up / log in** to get a JWT stored in `localStorage`.
-2. **Upload your resume** (PDF) — the backend extracts and stores the text.
-3. **Start an interview** by picking a resume, target role, and experience level.
-4. The AI interviewer asks questions **one at a time**, grounded in your resume and role — you respond, and replies stream in real time over SSE.
-5. After a set number of questions (default 8), the interview **auto-completes**, and a report-generation job is queued.
-6. A background worker calls the LLM to produce a structured **JSON report** (scores, strengths, weaknesses, suggestions), saved to the interview.
-7. You view your **performance report** on the report page once it's ready.
+1. Sign up / log in to get a JWT.
+2. Upload your resume (PDF) — the backend extracts and stores the text.
+3. Start an interview: pick a resume, target role, and experience level.
+4. The AI interviewer asks questions one at a time, grounded in your resume and role, streamed back over SSE.
+5. After 8 questions, the interview auto-completes and a report job is queued.
+6. The worker calls the LLM to generate a structured report, saved to the interview.
+7. View your report on the report page once it's ready.
 
 ---
 
 ## ☁️ Deployment
 
-MockMate runs as **three separate deployments** — one Vercel project and two Render services sharing the same codebase:
+- **Frontend** → Vercel (static Vite build)
+- **API** → Render (Web Service, `node server.js`)
+- **Worker** → Render (separate Web Service, same codebase, `node worker.js`)
+- **MongoDB** → data store, shared by both backend services
+- **Redis / BullMQ** → report job queue, shared by both backend services
 
-### 1. Frontend → Vercel
-- The `frontend/` folder is deployed as a static Vite build on **Vercel**.
-- **Build command:** `npm run build` · **Output directory:** `dist`
-- Environment variable set in the Vercel dashboard:
-  ```env
-  VITE_API_URL=https://<your-render-api-service>.onrender.com/api
-  ```
-- Live at: [https://getmockmate.vercel.app/](https://getmockmate.vercel.app/)
-
-### 2. Backend API → Render (Web Service #1)
-- The `backend/` folder is deployed as a **Web Service** on **Render**, running `server.js`.
-- **Start command:** `node server.js`
-- Handles all HTTP traffic — `/api/auth`, `/api/resume`, `/api/interview` — including the SSE stream for live interview answers.
-- Environment variables:
-  ```env
-  PORT=10000
-  MONGO_URI=...
-  JWT_SECRET=...
-  REDIS_URL=...
-  OPENROUTER_API_KEY=...
-  YOUR_SITE_URL=https://getmockmate.vercel.app
-  YOUR_APP_NAME=MockMate
-  ```
-
-### 3. Report Worker → Render (Web Service #2)
-- The **same `backend/` codebase** is deployed a **second time** on Render as its own service — but with the start command pointed at `worker.js` instead of `server.js`.
-- **Start command:** `node worker.js`
-- Connects to the **same MongoDB and Redis** as the API service, pulls jobs off the `report-generation` BullMQ queue, calls OpenRouter to generate the report JSON, and writes it back to the `Interview` document.
-- Exposes a tiny Express health-check route (`GET /`) so Render can verify liveness even though it isn't serving real app traffic.
-- Environment variables: same `MONGO_URI`, `REDIS_URL`, `OPENROUTER_API_KEY` as the API service, plus optionally:
-  ```env
-  REPORT_WORKER_CONCURRENCY=3
-  ```
-
-> 💡 **TL;DR:** one codebase, two Render services (`server.js` + `worker.js`) sharing the same database and Redis instance, plus a separate Vercel deployment for the frontend.
+Set `VITE_API_URL` in the Vercel project to your deployed API URL.
 
 ---
 
@@ -320,10 +256,8 @@ Create a `.env` file in `backend/`:
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-REDIS_URL=redis://127.0.0.1:6379
+REDIS_URL=redis-url
 OPENROUTER_API_KEY=your_openrouter_api_key
-YOUR_SITE_URL=http://localhost:5000
-YOUR_APP_NAME=MockMate
 ```
 
 Run the API server:
@@ -352,60 +286,52 @@ Run the dev server:
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173` (default Vite port).
+The app will be available at `http://localhost:5173`.
 
 ---
 
 ## 🗺️ Roadmap
 
-- [ ] Add automated tests (backend controllers, frontend components)
-- [ ] Voice-based interview mode (speech-to-text answers)
-- [ ] Support multiple LLM providers / model selection
-- [ ] Export interview report as PDF
-- [ ] Interview history analytics on the dashboard
-- [ ] Dockerize backend + worker for easier local/self-hosted setup
+- [ ] Voice interviews
+- [ ] Multiple LLM providers
+- [ ] PDF report export
+- [ ] Interview analytics
+- [ ] Docker + CI/CD
 
-Have an idea? Open an [issue](https://github.com/tassu1/MockMate/issues) or start a discussion!
+Have an idea? Open an [issue](https://github.com/tassu1/MockMate/issues).
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are very welcome — whether it's a bug fix, a new feature, or a docs improvement.
+Contributions are welcome — bug fixes, features, or docs improvements.
 
-1. **Fork** the repo and clone your fork locally.
-2. Create a new branch:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. Follow [Getting Started](#-getting-started) to run both `frontend` and `backend` locally (you'll need MongoDB, Redis, and an OpenRouter API key).
-4. Make your changes:
-   - Backend logic lives in `backend/src/{controllers,models,routes,services,utils}`.
-   - Frontend pages live in `frontend/src/pages`, shared logic in `frontend/src/lib`.
-   - If you touch the interview/report flow, remember there are **two backend processes** (`server.js` and `worker.js`) — test both where relevant.
+1. Fork the repo and clone your fork.
+2. Create a branch: `git checkout -b feature/your-feature-name`
+3. Follow [Getting Started](#-getting-started) to run `frontend` and `backend` locally.
+4. Backend logic lives in `backend/src/{controllers,models,routes,services,utils}`; frontend pages in `frontend/src/pages`. If you touch the interview/report flow, remember there are two backend processes (`server.js` and `worker.js`) — test both where relevant.
 5. Run `npm run lint` in `frontend/` before submitting UI changes.
-6. Commit with a clear message and push your branch.
-7. Open a **Pull Request** describing what you changed and why. Screenshots/GIFs are appreciated for UI changes.
+6. Open a Pull Request describing what changed and why.
 
 ### Good first issues
-- Add form/input validation on the frontend (auth, resume upload).
-- Improve error states/messages surfaced to the user.
-- Add tests for controllers or utils (there are currently none).
-- Add CI (lint/build checks) or a Dockerfile for the backend/worker.
-- UI/UX polish on the Dashboard, Interview, or Report pages.
+- Form/input validation on the frontend (auth, resume upload)
+- Better error states/messages
+- Tests for controllers or utils (currently none)
+- CI (lint/build checks) or a Dockerfile for backend/worker
+- UI/UX polish on Dashboard, Interview, or Report pages
 
-For larger changes, please open an issue first to discuss the approach.
+For larger changes, open an issue first to discuss the approach.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE) — feel free to use, modify, and distribute it. Attribution appreciated!
+Licensed under the [MIT License](LICENSE).
 
 ---
 
 ## 🙋 Author
 
-Built with ❤️ by **Tahseen** ([@tassu1](https://github.com/tassu1)).
+Built by **Tahseen** ([@tassu1](https://github.com/tassu1)).
 
 If you find this project useful, consider giving it a ⭐ on GitHub!
