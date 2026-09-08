@@ -164,8 +164,6 @@ flowchart LR
     WRK -- "save report" --> DB
 ```
 
----
-
 ## 📁 Project Structure
 
 ```
