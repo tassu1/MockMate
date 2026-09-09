@@ -9,6 +9,7 @@ import { generateReport } from "../services/reportService.js";
 const CONCURRENCY = parseInt(process.env.REPORT_WORKER_CONCURRENCY || "3", 10);
 
 export const startReportWorker = () => {
+  console.log("worker ke pass aagya h report");
   const worker = new Worker(
     REPORT_QUEUE_NAME,
     async (job) => {
