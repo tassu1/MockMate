@@ -203,19 +203,9 @@ export const endInterview = async (req, res) => {
     const job = await enqueueReportJob(interview._id);
 
     console.log("🔥 REPORT JOB ADDED");
-    console.log("Job ID:", job.id);
+    console.log(job);
     console.log("Job state:", await job.getState());
 
-    console.log(
-      "Queue counts:",
-      await reportQueue.getJobCounts(
-        "waiting",
-        "active",
-        "completed",
-        "failed",
-        "delayed"
-      )
-    );
 
     res.json({
       success: true,
