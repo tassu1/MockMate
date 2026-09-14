@@ -7,29 +7,51 @@ import { generateReport } from "../services/reportService.js";
 // This is the actual "backpressure" control against OpenAI rate limits —
 // tune it based on your OpenAI tier's requests-per-minute limit.
 const CONCURRENCY = parseInt(process.env.REPORT_WORKER_CONCURRENCY || "3", 10);
-
 export const startReportWorker = () => {
-  console.log("worker ke pass aagya h report");
+  console.log("🚀 Starting report worker...");
+  console.log("Queue:", REPORT_QUEUE_NAME);
+  console.log("Redis status:", connection.status);
+
   const worker = new Worker(
     REPORT_QUEUE_NAME,
     async (job) => {
-      const { interviewId } = job.data;
-      console.log(`[report-worker] generating report for ${interviewId}`);
-      const report = await generateReport(interviewId);
-      console.log(`[report-worker] done: ${interviewId}`);
+      console.log("🔥 JOB RECEIVED:", job.id);
+      console.log("Interview ID:", job.data.interviewId);
+
+      const report = await generateReport(job.data.interviewId);
+
+      console.log("✅ REPORT GENERATED:", job.id);
+
       return report;
     },
-    { connection, concurrency: CONCURRENCY }
+    {
+      connection,
+      concurrency: CONCURRENCY,
+    }
   );
 
-  worker.on("failed", (job, err) => {
-    console.error(
-      `[report-worker] job for interview ${job?.data?.interviewId} failed (attempt ${job?.attemptsMade}): ${err.message}`
-    );
+  worker.on("ready", () => {
+    console.log("🟢 WORKER READY");
+  });
+
+  worker.on("active", (job) => {
+    console.log("🟡 JOB ACTIVE:", job.id);
   });
 
   worker.on("completed", (job) => {
-    console.log(`[report-worker] job ${job.id} completed`);
+    console.log("✅ JOB COMPLETED:", job.id);
+  });
+
+  worker.on("failed", (job, err) => {
+    console.error(
+      "❌ JOB FAILED:",
+      job?.id,
+      err.message
+    );
+  });
+
+  worker.on("error", (err) => {
+    console.error("❌ WORKER ERROR:", err.message);
   });
 
   return worker;
