@@ -200,13 +200,30 @@ export const endInterview = async (req, res) => {
     interview.status = "completed";
     await interview.save();
 
-    await enqueueReportJob(interview._id);
+    const job = await enqueueReportJob(interview._id);
+
+    console.log("🔥 REPORT JOB ADDED");
+    console.log("Job ID:", job.id);
+    console.log("Job state:", await job.getState());
+
+    console.log(
+      "Queue counts:",
+      await reportQueue.getJobCounts(
+        "waiting",
+        "active",
+        "completed",
+        "failed",
+        "delayed"
+      )
+    );
 
     res.json({
       success: true,
       message: "Interview ended. Report generation has started.",
     });
   } catch (error) {
+    console.error("❌ END INTERVIEW ERROR:", error);
+
     res.status(500).json({
       success: false,
       message: error.message,
