@@ -11,7 +11,13 @@ connectDB()
 
 const app = express();
 
-app.use(cors());
+app.use(cors());app.use(
+  cors({
+    origin: "https://getmockmate.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 
 
