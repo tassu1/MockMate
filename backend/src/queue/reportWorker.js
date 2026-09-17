@@ -3,9 +3,9 @@ import connection from "./connection.js";
 import { REPORT_QUEUE_NAME } from "./reportQueue.js";
 import { generateReport } from "../services/reportService.js";
 
-// Concurrency = how many report jobs this worker process runs at once.
+
 // This is the actual "backpressure" control against OpenAI rate limits —
-// tune it based on your OpenAI tier's requests-per-minute limit.
+
 const CONCURRENCY = parseInt(process.env.REPORT_WORKER_CONCURRENCY || "3", 10);
 export const startReportWorker = () => {
   console.log("🚀 Starting report worker...");
