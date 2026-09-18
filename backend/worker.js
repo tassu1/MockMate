@@ -27,6 +27,13 @@ app.listen(PORT, () => {
   console.log(`Worker health server running on port ${PORT}`);
 });
 
+connection.on("ready", async () => {
+  console.log(
+    "WORKER DEBUG REDIS VALUE:",
+    await connection.get("mockmate-debug")
+  );
+});
+
 setInterval(() => {
   console.log("🫀 Worker process is alive");
 }, 30000);

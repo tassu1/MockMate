@@ -41,3 +41,9 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
+
+await connection.set("mockmate-debug", "hello");
+console.log(
+  "DEBUG REDIS VALUE:",
+  await connection.get("mockmate-debug")
+);
