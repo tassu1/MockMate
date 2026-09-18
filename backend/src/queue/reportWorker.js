@@ -5,6 +5,12 @@ import { generateReport } from "../services/reportService.js";
 
 
 const CONCURRENCY = parseInt(process.env.REPORT_WORKER_CONCURRENCY || "3", 10);
+connection.on("ready", async () => {
+  console.log(
+    "WORKER DEBUG REDIS VALUE:",
+    await connection.get("mockmate-debug")
+  );
+});
 export const startReportWorker = () => {
   console.log("🚀 Starting report worker...");
   console.log("Queue:", REPORT_QUEUE_NAME);
