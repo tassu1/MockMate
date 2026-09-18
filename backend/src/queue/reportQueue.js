@@ -6,6 +6,7 @@ export const REPORT_QUEUE_NAME = "report-generation";
 export const reportQueue = new Queue(REPORT_QUEUE_NAME, { connection });
 
 
+
 export const enqueueReportJob = async (interviewId) => {
   console.log("1️⃣ enqueueReportJob START");
 
