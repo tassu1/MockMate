@@ -27,8 +27,6 @@ app.listen(PORT, () => {
   console.log(`Worker health server running on port ${PORT}`);
 });
 
-process.on("SIGTERM", async () => {
-  console.log("SIGTERM received. Closing worker...");
-  await worker.close();
-  process.exit(0);
-});
+setInterval(() => {
+  console.log("🫀 Worker process is alive");
+}, 30000);

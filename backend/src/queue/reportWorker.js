@@ -4,8 +4,6 @@ import { REPORT_QUEUE_NAME } from "./reportQueue.js";
 import { generateReport } from "../services/reportService.js";
 
 
-// This is the actual "backpressure" control against OpenAI rate limits —
-
 const CONCURRENCY = parseInt(process.env.REPORT_WORKER_CONCURRENCY || "3", 10);
 export const startReportWorker = () => {
   console.log("🚀 Starting report worker...");
