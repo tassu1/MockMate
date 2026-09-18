@@ -5,11 +5,7 @@ export const REPORT_QUEUE_NAME = "report-generation";
 
 export const reportQueue = new Queue(REPORT_QUEUE_NAME, { connection });
 
-/**
- * Enqueues a job to generate the report for a completed interview.
- * Retries up to 3 times with exponential backoff if the LLM call
- * or JSON parsing fails.
- */
+
 export const enqueueReportJob = async (interviewId) => {
   console.log("report ho rha h");
 
