@@ -14,6 +14,16 @@ export const enqueueReportJob = async (interviewId) => {
 
   console.log("3️⃣ About to add job");
 
+  await connection.set(
+  "mockmate-debug",
+  `created-by-api-${Date.now()}`
+);
+
+console.log(
+  "API DEBUG VALUE:",
+  await connection.get("mockmate-debug")
+);
+
   const job = await reportQueue.add(
     "generate-report",
     {

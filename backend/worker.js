@@ -32,3 +32,6 @@ app.listen(PORT, () => {
 setInterval(() => {
   console.log("🫀 Worker process is alive");
 }, 30000);
+
+const counts = await reportQueue.getJobCounts();
+console.log("🧪 WORKER QUEUE COUNTS:", counts);
