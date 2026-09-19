@@ -5,6 +5,7 @@ import connectDB from "./src/config/db.js";
 import "./src/models/resume.js";
 import "./src/models/interview.js";
 import { startReportWorker } from "./src/queue/reportWorker.js";
+import { reportQueue } from "./src/queue/reportQueue.js";
 
 dotenv.config();
 
